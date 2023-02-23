@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '@prisma/client';
 import { CreateUserDto } from '@dtos/users.dto';
 import userService from '@services/users.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class UsersController {
   public userService = new userService();
@@ -11,6 +12,16 @@ class UsersController {
       const findAllUsersData: User[] = await this.userService.findAllUser();
 
       res.status(200).json({ data: findAllUsersData, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getUserProfile = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const currentUser = req.user
+
+      res.status(200).json({ status: 200, success: true, data: currentUser, message: 'Get user profile succesfully' });
     } catch (error) {
       next(error);
     }

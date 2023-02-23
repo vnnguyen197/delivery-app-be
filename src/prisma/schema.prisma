@@ -11,7 +11,54 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(uuid())
   email    String @unique
-  password String
+  password String @default("")
+  firstName String @default("") @map("first_name")
+  lastName String @default("") @map("last_name")
+  birthday DateTime  @map("birth_day")
+  phoneNumber String @default("") @map("phone_number")
+  address String @default("")
+  gender String @default("male")
+  avatar String @default("")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @default(now()) @map("deleted_at")
+  @@map("users")
+}
+
+model ParentsProduct {
+  id       String @id @default(uuid())
+  name     String @default("")
+  price    Float @default(0)
+  productId String @map("product_id") 
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  @@map("parents_product")
+} 
+
+model Categories {
+  id       String @id @default(uuid())
+  name     String @default("")
+  price    Float @default(0)
+  products Product[]  
+  @@map("categories")
+} 
+
+model Product {
+  id       String @id @default(uuid())
+  name     String @default("")
+  subTitle String @default("") @map("sub_title")
+  imageUrl String @default("") @map("image_url")
+  description String @default("")
+  prices    ParentsProduct[]
+  categoryId String @map("category_id")
+  category Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  rate Int 
+  status String 
+  size String
+  slug String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @default(now()) @map("deleted_at")
+   @@map("products")
 }
