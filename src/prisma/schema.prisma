@@ -27,19 +27,20 @@ model User {
   @@map("users")
 }
 
-model ParentsProduct {
+model ProductPrices {
   id       String @id @default(uuid())
-  name     String @default("")
   price    Float @default(0)
   productId String @map("product_id") 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  @@map("parents_product")
+  @@map("product_prices")
 } 
 
 model Categories {
   id       String @id @default(uuid())
   name     String @default("")
   price    Float @default(0)
+  slug     String @default("")
+  childrenId  String 
   products Product[]  
   @@map("categories")
 } 
@@ -50,7 +51,7 @@ model Product {
   subTitle String @default("") @map("sub_title")
   imageUrl String @default("") @map("image_url")
   description String @default("")
-  prices    ParentsProduct[]
+  prices    ProductPrices[]
   categoryId String @map("category_id")
   category Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   rate Int 
@@ -60,5 +61,5 @@ model Product {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @default(now()) @map("deleted_at")
-   @@map("products")
+  @@map("products")
 }

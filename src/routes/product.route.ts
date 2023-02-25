@@ -1,3 +1,4 @@
+import ProductController from '@/controllers/products.controller';
 import authMiddleware from '@/middlewares/auth.middleware';
 import UsersController from '@controllers/users.controller';
 import { CreateUserDto } from '@dtos/users.dto';
@@ -8,14 +9,14 @@ import { Router } from 'express';
 class ProductsRoute implements Routes {
   public path = '/products';
   public router = Router();
-  public usersController = new UsersController();
+  public productController = new ProductController();
 
   constructor() {
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, authMiddleware, this.usersController.getUserProfile);
+    this.router.post(`${this.path}/create`, authMiddleware, this.productController.createUser);
     // this.router.get(`${this.path}`, this.usersController.getUsers);
     // this.router.get(`${this.path}/:id(\\d+)`, this.usersController.getUserById);
     // this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
