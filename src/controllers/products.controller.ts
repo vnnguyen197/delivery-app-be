@@ -6,7 +6,7 @@ import { NextFunction, Request, Response } from "express";
 class ProductController {
   public productService = new ProductService();
 
-  public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public createProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const productData: CreateProductDto  = req.body;
       const createUserData: Product = await this.productService.createProduct(productData);

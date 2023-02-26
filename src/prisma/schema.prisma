@@ -29,16 +29,17 @@ model User {
 
 model ProductPrices {
   id       String @id @default(uuid())
+  name  String @default("")
   price    Float @default(0)
   productId String @map("product_id") 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  @@index([productId], map: "prices_product_id_fkey")
   @@map("product_prices")
 } 
 
 model Categories {
   id       String @id @default(uuid())
   name     String @default("")
-  price    Float @default(0)
   slug     String @default("")
   childrenId  String 
   products Product[]  

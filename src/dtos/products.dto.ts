@@ -21,7 +21,7 @@ class CreateProductDto {
   public description: string;
   @IsArray()
   @IsNotEmpty()
-  public listPrices: ProductPricesDto[];
+  public prices: ProductPricesDto[];
   @IsUUID()
   @IsNotEmpty()
   public categoryId: string;
