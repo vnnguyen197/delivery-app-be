@@ -1,5 +1,7 @@
 import { CreateProductDto, ProductPricesDto } from "@/dtos/products.dto";
 import { HttpException } from "@/exceptions/HttpException";
+import { queryPagination } from "@/utils/util";
+import { QueryProduct, ResponseList } from "@interfaces/product.interface";
 import { Categories, PrismaClient, Product } from "@prisma/client";
 import { isEmpty } from "class-validator";
 
@@ -10,7 +12,7 @@ class ProductService {
   public async createProduct(dataProduct: CreateProductDto): Promise<Product> {
     if (isEmpty(dataProduct)) throw new HttpException(400, 'Data product is empty', false);
 
-    await this.checkCategory(dataProduct.categoryId)
+    await this.checkCategory(dataProduct.categoryId);
 
     const listItemPrices = dataProduct.prices;
     const createdProduct = await this.products.create({
@@ -25,7 +27,21 @@ class ProductService {
       },
     });
     return createdProduct;
-  
+  }
+
+  public async findAllProducts(query: QueryProduct): Promise<ResponseList> {
+    const { take, skip } = queryPagination(query);
+    const count = await this.products.count();
+    const rows: Product[] = await this.products.findMany({
+      skip,
+      take: take,
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+      ],
+    });
+    return { rows, count, page: query.page ?? 1  };
   }
 
   /**
