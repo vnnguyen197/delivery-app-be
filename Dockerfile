@@ -5,20 +5,22 @@ COPY . ./app
 
 WORKDIR /app
 
-RUN npm install
+RUN docker-compose up -d
 
-EXPOSE 3000
+RUN yarn
+
+EXPOSE 5000
 
 # Development build stage
 FROM common-build-stage as development-build-stage
 
 ENV NODE_ENV development
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn","dev"]
 
 # Production build stage
 FROM common-build-stage as production-build-stage
 
 ENV NODE_ENV production
 
-CMD ["npm", "run", "start"]
+CMD ["yarn","start"]
