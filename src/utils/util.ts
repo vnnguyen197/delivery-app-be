@@ -1,3 +1,5 @@
+import { QueryProduct } from "@/interfaces/product.interface";
+
 /**
  * @method isEmpty
  * @param {String | Number | Object} value
@@ -17,3 +19,7 @@ export const isEmpty = (value: string | number | object): boolean => {
     return false;
   }
 };
+
+export const queryPagination = ({limit = 10, page=1}: QueryProduct) => {
+  return { skip: limit * (page-1), take: +limit}
+}

@@ -12,42 +12,42 @@ class UserService {
     return allUser;
   }
 
-  public async findUserById(userId: number): Promise<User> {
-    if (isEmpty(userId)) throw new HttpException(400, "UserId is empty");
+  public async findUserById(userId: string): Promise<User> {
+    if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty', false);
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (!findUser) throw new HttpException(409, "User doesn't exist", false);
 
     return findUser;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty', false);
 
     const findUser: User = await this.users.findUnique({ where: { email: userData.email } });
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`, false);
 
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await this.users.create({ data: { ...userData, password: hashedPassword } });
     return createUserData;
   }
 
-  public async updateUser(userId: number, userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty', false);
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (!findUser) throw new HttpException(409, "User doesn't exist", false);
 
     const hashedPassword = await hash(userData.password, 10);
     const updateUserData = await this.users.update({ where: { id: userId }, data: { ...userData, password: hashedPassword } });
     return updateUserData;
   }
 
-  public async deleteUser(userId: number): Promise<User> {
-    if (isEmpty(userId)) throw new HttpException(400, "User doesn't existId");
+  public async deleteUser(userId: string): Promise<User> {
+    if (isEmpty(userId)) throw new HttpException(400, "User doesn't existId", false);
 
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
-    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    if (!findUser) throw new HttpException(409, "User doesn't exist", false);
 
     const deleteUserData = await this.users.delete({ where: { id: userId } });
     return deleteUserData;

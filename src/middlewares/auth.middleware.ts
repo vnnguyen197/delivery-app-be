@@ -15,19 +15,19 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       const userId = verificationResponse.id;
 
       const users = new PrismaClient().user;
-      const findUser = await users.findUnique({ where: { id: Number(userId) } });
+      const findUser = await users.findUnique({ where: { id: userId } });
 
       if (findUser) {
         req.user = findUser;
         next();
       } else {
-        next(new HttpException(401, 'Wrong authentication token'));
+        next(new HttpException(401, 'Wrong authentication token', false));
       }
     } else {
-      next(new HttpException(404, 'Authentication token missing'));
+      next(new HttpException(404, 'Authentication token missing', false));
     }
   } catch (error) {
-    next(new HttpException(401, 'Wrong authentication token'));
+    next(new HttpException(401, 'Wrong authentication token', false));
   }
 };
 
