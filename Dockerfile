@@ -23,4 +23,4 @@ FROM common-build-stage as production-build-stage
 
 ENV NODE_ENV production
 
-CMD ["yarn","dev"]
+CMD ["yarn","start"]
