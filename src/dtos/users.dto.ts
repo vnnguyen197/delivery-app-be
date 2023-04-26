@@ -6,9 +6,15 @@ import { IsDate, IsDateString, IsEmail, IsOptional, IsString } from 'class-valid
    @IsString()
    public password: string;
    @IsString()
-   public firstName: string;
+   public fullName: string;
    @IsString()
-   public lastName: string;
+   public citizenId: string;
+   @IsDateString()
+   public citizenDate: Date;
+   @IsString()
+   public citizenAdd: string;
+   @IsString()
+   public role: string;
    @IsDateString()
    public birthday: Date;
    @IsString()
