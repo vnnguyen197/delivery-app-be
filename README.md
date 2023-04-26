@@ -18,10 +18,12 @@ git clone https://github.com/phongledut/delivery-app-be
 cd <project_name>
 npm install
 ```
+- Copy .env.example to .env.development.local and .env (create a file .env for run prisma)
 
 Follow these instructions to run project
 
 - Build and run docker on daemon
+- Please install docker before run command
 
 ```
 docker-compose up -d
@@ -32,8 +34,6 @@ docker-compose up -d
 ```
 npx prisma db push
 ```
-
-- Copy .env.example to .env.development.local
 
 - Build and run project
 
