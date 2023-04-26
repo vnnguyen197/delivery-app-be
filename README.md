@@ -9,7 +9,7 @@
 - Clone the repository
 
 ```
-git clone https://gitlab.com/phuongtechchain/order-office-lunch-be.git <project_name>
+git clone https://github.com/phongledut/delivery-app-be
 ```
 
 - Install dependencies
@@ -33,7 +33,7 @@ docker-compose up -d
 npx prisma db push
 ```
 
-- Copy .env.example to .env
+- Copy .env.example to .env.development.local
 
 - Build and run project
 
