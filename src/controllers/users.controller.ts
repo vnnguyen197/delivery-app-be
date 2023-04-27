@@ -19,7 +19,7 @@ class UsersController {
 
   public getUserProfile = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const currentUser = req.user
+      const currentUser = req.user;
 
       res.status(200).json({ status: 200, success: true, data: currentUser, message: 'Get user profile succesfully' });
     } catch (error) {
@@ -49,9 +49,9 @@ class UsersController {
     }
   };
 
-  public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const userId = req.params.id;
+      const userId = req.user.id;
       const userData: CreateUserDto = req.body;
       const updateUserData: User = await this.userService.updateUser(userId, userData);
 
