@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import { User } from '@prisma/client';
 import { CreateUserDto } from '@dtos/users.dto';
 import { RequestWithUser } from '@interfaces/auth.interface';
+import { User } from '@prisma/client';
 import AuthService from '@services/auth.service';
+import { NextFunction, Request, Response } from 'express';
 
 class AuthController {
   public authService = new AuthService();
@@ -12,7 +12,7 @@ class AuthController {
       const userData: CreateUserDto = req.body;
       const signUpUserData: User = await this.authService.signup(userData);
 
-      res.status(201).json({ data: signUpUserData, message: 'signup' });
+      res.status(201).json({message: 'signup', status: 201, success: true, data: signUpUserData });
     } catch (error) {
       next(error);
     }
@@ -21,9 +21,9 @@ class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: CreateUserDto = req.body;
-      const { accessToken, findUser } = await this.authService.login(userData);
+      const { accessToken } = await this.authService.login(userData);
 
-      res.status(200).json({ status: 200, success: true, data: { accessToken, findUser }, message: 'login succesfully' });
+      res.status(200).json({ status: 200, success: true, data: { accessToken }, message: 'login succesfully' });
     } catch (error) {
       next(error);
     }
