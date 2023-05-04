@@ -11,59 +11,93 @@ generator client {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String @default("")
-  fullName String @default("") @map("full_name")
-  birthday String @default("")  @map("birth_day")
-  citizenId String @default("") @map("citizen_id")
-  citizenDate String @default("")  @map("citizen_date")
-  citizenAdd String @default("") @map("citizen_add")
-  role     String @default("user")
-  phoneNumber String @default("") @map("phone_number")
-  address String @default("")
-  gender String @default("male")
-  avatar String @default("")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @default(now()) @map("deleted_at")
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String    @default("")
+  fullName    String    @default("") @map("full_name")
+  birthday    String    @default("") @map("birth_day")
+  citizenId   String    @default("") @map("citizen_id")
+  citizenDate String    @default("") @map("citizen_date")
+  citizenAdd  String    @default("") @map("citizen_add")
+  role        String    @default("user")
+  phoneNumber String    @default("") @map("phone_number")
+  address     String    @default("")
+  gender      String    @default("male")
+  avatar      String    @default("")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @default(now()) @map("deleted_at")
+  Orders      Orders[]
+
   @@map("users")
 }
 
+model Orders {
+  id              String    @id @default(uuid())
+  name            String    @default("")
+  productVolume   Float     @default(0) @map("product_volume")
+  volumeUnit      String    @default("g") @map("volume_unit")
+  description     String    @default("")
+  senderName      String    @default("") @map("sender_name")
+  senderPhone     String    @default("") @map("sender_phone")
+  senderAddress   String    @default("") @map("sender_address")
+  receiverName    String    @default("") @map("receiver_name")
+  receiverPhone   String    @default("") @map("receiver_phone")
+  receiverAddress String    @default("") @map("receiver_address")
+  status          STATUS    @default(WAITING)
+  userCreated     String    @map("user_created")
+  user            User      @relation(fields: [userCreated], references: [id])
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @default(now()) @map("deleted_at")
+
+  @@map("orders")
+}
+
 model ProductPrices {
-  id       String @id @default(uuid())
-  name  String @default("")
-  price    Float @default(0)
-  productId String @map("product_id") 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id        String  @id @default(uuid())
+  name      String  @default("")
+  price     Float   @default(0)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   @@index([productId], map: "prices_product_id_fkey")
   @@map("product_prices")
-} 
+}
 
 model Categories {
-  id       String @id @default(uuid())
-  name     String @default("")
-  slug     String @default("")
-  childrenId  String 
-  products Product[]  
+  id         String    @id @default(uuid())
+  name       String    @default("")
+  slug       String    @default("")
+  childrenId String
+  products   Product[]
+
   @@map("categories")
-} 
+}
 
 model Product {
-  id       String @id @default(uuid())
-  name     String @default("")
-  subTitle String @default("") @map("sub_title")
-  imageUrl String @default("") @map("image_url")
-  description String @default("")
-  prices    ProductPrices[]
-  categoryId String @map("category_id")
-  category Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  rate Int 
-  status String 
-  size String
-  slug String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @default(now()) @map("deleted_at")
+  id          String          @id @default(uuid())
+  name        String          @default("")
+  subTitle    String          @default("") @map("sub_title")
+  imageUrl    String          @default("") @map("image_url")
+  description String          @default("")
+  prices      ProductPrices[]
+  categoryId  String          @map("category_id")
+  category    Categories      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  rate        Int
+  status      String
+  size        String
+  slug        String
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  deletedAt   DateTime?       @default(now()) @map("deleted_at")
+
   @@map("products")
+}
+
+enum STATUS {
+  WAITING
+  SHIPPING
+  DONE
+  CANCEL
 }

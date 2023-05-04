@@ -9,4 +9,10 @@ enum ROLE {
   SHIPPER = 'shipper'
 }
 
-export {GENDER,ROLE}
+enum STATUS {
+  WAITING = 'WAITING',
+  SHIPPING = 'SHIPPING',
+  DONE = 'DONE',
+  CANCEL = 'CANCEL',
+}
+export { GENDER, ROLE, STATUS };
