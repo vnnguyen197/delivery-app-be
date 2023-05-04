@@ -1,6 +1,8 @@
 import { CreateOrderDto } from '@/dtos/orders.dto';
 import { CreateProductDto } from '@/dtos/products.dto';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import { IQuery } from '@/interfaces/common.interface';
+import { ResponseOrder } from '@/interfaces/order.interface';
 import { QueryProduct, ResponseList } from '@/interfaces/product.interface';
 import OrderService from '@/services/order.service';
 import { Orders, Product } from '@prisma/client';
@@ -24,16 +26,17 @@ class OrderController {
   /**
    * getlist
    */
-  // public getlist = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const query: QueryProduct = req.query;
-  //     const createUserData: ResponseList = await this.productService.findAllProducts(query);
+  public getlist = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: IQuery = req.query;
+      const userId = req.user.id;
+      const listData: ResponseOrder = await this.orderService.findAllOrder(query,userId);
 
-  //     res.status(201).json({ data: createUserData, message: 'success' });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(201).json({ data: listData, message: 'success' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default OrderController;

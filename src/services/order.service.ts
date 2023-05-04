@@ -1,5 +1,8 @@
 import { CreateOrderDto } from '@/dtos/orders.dto';
 import { HttpException } from '@/exceptions/HttpException';
+import { IQuery } from '@/interfaces/common.interface';
+import { ResponseOrder } from '@/interfaces/order.interface';
+import { queryPagination } from '@/utils/util';
 import { Orders, PrismaClient } from '@prisma/client';
 import { isEmpty } from 'class-validator';
 
@@ -8,7 +11,7 @@ class OrderService {
 
   public async create(data: CreateOrderDto, idCreated: string): Promise<Orders> {
     if (isEmpty(data)) throw new HttpException(400, 'Data Order is empty', false);
-    const inputData = { ...data, userCreated: idCreated }; 
+    const inputData = { ...data, userCreated: idCreated };
 
     const createdOrder = await this.orders.create({
       data: {
@@ -18,20 +21,24 @@ class OrderService {
     return createdOrder;
   }
 
-  // public async findAllProducts(query: QueryProduct): Promise<ResponseList> {
-  //   const { take, skip } = queryPagination(query);
-  //   const count = await this.products.count();
-  //   const rows: Product[] = await this.products.findMany({
-  //     skip,
-  //     take: take,
-  //     orderBy: [
-  //       {
-  //         updatedAt: 'desc',
-  //       },
-  //     ],
-  //   });
-  //   return { rows, count, page: query.page ?? 1 };
-  // }
+  public async findAllOrder(query: IQuery, userId): Promise<ResponseOrder> {
+    const { take, skip } = queryPagination(query);
+    const count = await this.orders.count();
+    const rows: Orders[] = await this.orders.findMany({
+      skip,
+      take: take,
+      where: {
+        status: query.status,
+        userCreated: userId,
+      },
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+      ],
+    });
+    return { rows, count, page: query.page ?? 1 };
+  }
 
   /**
    * checkCategory

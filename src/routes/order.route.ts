@@ -16,6 +16,7 @@ class OrderRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}`, authMiddleware, validationMiddleware(CreateOrderDto, 'body'), this.orderController.create);
+    this.router.get(`${this.path}`, authMiddleware, this.orderController.getlist);
     // this.router.patch(`${this.path}`, validationMiddleware(LoginUserDto, 'body'), this.authController.logIn);
   }
 }

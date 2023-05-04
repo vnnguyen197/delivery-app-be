@@ -44,6 +44,7 @@ model Orders {
   receiverName    String    @default("") @map("receiver_name")
   receiverPhone   String    @default("") @map("receiver_phone")
   receiverAddress String    @default("") @map("receiver_address")
+  status          STATUS    @default(WAITING)
   userCreated     String    @map("user_created")
   user            User      @relation(fields: [userCreated], references: [id])
   createdAt       DateTime  @default(now()) @map("created_at")
@@ -92,4 +93,11 @@ model Product {
   deletedAt   DateTime?       @default(now()) @map("deleted_at")
 
   @@map("products")
+}
+
+enum STATUS {
+  WAITING
+  SHIPPING
+  DONE
+  CANCEL
 }
