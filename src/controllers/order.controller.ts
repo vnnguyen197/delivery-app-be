@@ -5,7 +5,7 @@ import { IQuery } from '@/interfaces/common.interface';
 import { ResponseOrder } from '@/interfaces/order.interface';
 import { QueryProduct, ResponseList } from '@/interfaces/product.interface';
 import OrderService from '@/services/order.service';
-import { Orders, Product } from '@prisma/client';
+import { Orders, Product, STATUS } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 class OrderController {
@@ -30,9 +30,22 @@ class OrderController {
     try {
       const query: IQuery = req.query;
       const userId = req.user.id;
-      const listData: ResponseOrder = await this.orderService.findAllOrder(query,userId);
+      const listData: ResponseOrder = await this.orderService.findAllOrder(query, userId);
 
       res.status(201).json({ data: listData, message: 'success' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateStatus = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const shipper = req.user.id;
+      const orderId = req.params.id
+      const data: {status: STATUS} = req.body;
+      const updateUserData: Orders = await this.orderService.updateStatus(orderId, data, shipper);
+
+      res.status(200).json({ data: updateUserData, message: 'updated' });
     } catch (error) {
       next(error);
     }

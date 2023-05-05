@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { STATUS } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 
 class CreateOrderDto {
@@ -32,4 +33,10 @@ class CreateOrderDto {
  
 }
 
-export { CreateOrderDto };
+class UpdateStatus {
+  @IsEnum(STATUS)
+  @IsNotEmpty()
+  public status: string;
+}
+
+export { CreateOrderDto, UpdateStatus };

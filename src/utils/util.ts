@@ -20,6 +20,6 @@ export const isEmpty = (value: string | number | object): boolean => {
   }
 };
 
-export const queryPagination = ({limit = 10, page=1}: QueryProduct) => {
+export const queryPagination = ({limit = 20, page=1}: QueryProduct) => {
   return { skip: limit * (page-1), take: +limit}
 }
