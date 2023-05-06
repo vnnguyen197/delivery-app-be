@@ -32,6 +32,26 @@ model User {
   @@map("users")
 }
 
+model Moderator {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String    @default("")
+  fullName    String    @default("") @map("full_name")
+  birthday    String    @default("") @map("birth_day")
+  citizenId   String    @default("") @map("citizen_id")
+  citizenDate String    @default("") @map("citizen_date")
+  citizenAdd  String    @default("") @map("citizen_add")
+  phoneNumber String    @default("") @map("phone_number")
+  address     String    @default("")
+  gender      String    @default("male")
+  avatar      String    @default("")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @default(now()) @map("deleted_at")
+
+  @@map("moderator")
+}
+
 model Orders {
   id              String    @id @default(uuid())
   name            String    @default("")
