@@ -46,6 +46,7 @@ model Orders {
   receiverAddress String    @default("") @map("receiver_address")
   status          STATUS    @default(WAITING)
   userCreated     String    @map("user_created")
+  shipper         String    @default("") @map("shipper")
   user            User      @relation(fields: [userCreated], references: [id])
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
