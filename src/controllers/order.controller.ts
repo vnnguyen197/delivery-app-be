@@ -43,6 +43,7 @@ class OrderController {
       const shipper = req.user.id;
       const orderId = req.params.id
       const data: {status: STATUS} = req.body;
+      console.log("🚀 ~ file: order.controller.ts:46 ~ OrderController ~ updateStatus= ~ data:", data)
       const updateUserData: Orders = await this.orderService.updateStatus(orderId, data, shipper);
 
       res.status(200).json({ data: updateUserData, message: 'updated' });

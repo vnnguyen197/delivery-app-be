@@ -30,7 +30,6 @@ class OrderService {
   public async findAllOrder(query: IQuery, userCreated): Promise<ResponseOrder> {
     const { role } = await this.user.findUnique({ where: { id: userCreated } });
     let condition = {};
-
     if (role && role === ROLE.USER) {
       condition = { ...query, userCreated };
     } else {
@@ -55,12 +54,14 @@ class OrderService {
     return { rows, count, page: query.page ?? 1 };
   }
 
-  public async updateStatus(orderId: string, status, userId): Promise<Orders> {
+  public async updateStatus(orderId: string, {status}, userId): Promise<Orders> {
     
     const findOrder: Orders = await this.orders.findUnique({ where: { id: orderId } });
     if (!findOrder) throw new HttpException(409, "Order doesn't exist", false);
 
     const { role } = await this.user.findUnique({ where: { id: userId } });
+    if (role === ROLE.USER && status !== STATUS.DONE) throw new HttpException(401, "User can't update status", false);
+    if (role === ROLE.SHIPPER && status === STATUS.DONE) throw new HttpException(401, "Shipper can't update status done", false);
 
     let dataUpdate;
 
