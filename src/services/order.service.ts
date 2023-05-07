@@ -59,7 +59,11 @@ class OrderService {
     const findOrder: Orders = await this.orders.findUnique({ where: { id: orderId } });
     if (!findOrder) throw new HttpException(409, "Order doesn't exist", false);
 
+    const findOrderShipping: Orders = await this.orders.findFirst({ where: { status: STATUS.SHIPPING } });
+
     const { role } = await this.user.findUnique({ where: { id: userId } });
+
+    if (role === ROLE.SHIPPER && status !== STATUS.DONE && findOrderShipping) throw new HttpException(400, "you can't change status while you have the order", false);
     if (role === ROLE.USER && status !== STATUS.DONE) throw new HttpException(401, "User can't update status", false);
     if (role === ROLE.SHIPPER && status === STATUS.DONE) throw new HttpException(401, "Shipper can't update status done", false);
 
