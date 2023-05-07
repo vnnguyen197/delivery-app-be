@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '@prisma/client';
+import { Moderator, User } from '@prisma/client';
 
 export interface DataStoredInToken {
   id: string;
@@ -12,4 +12,8 @@ export interface TokenData {
 
 export interface RequestWithUser extends Request {
   user: User;
+}
+
+export interface RequestWithAdmin extends Request {
+  user: Moderator;
 }
