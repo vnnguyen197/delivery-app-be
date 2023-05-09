@@ -64,7 +64,7 @@ class OrderService {
     const { role } = await this.user.findUnique({ where: { id: userId } });
 
     if (role === ROLE.SHIPPER && status !== STATUS.DONE && findOrderShipping) throw new HttpException(400, "you can't change status while you have the order", false);
-    if (role === ROLE.USER && status !== STATUS.DONE) throw new HttpException(401, "User can't update status", false);
+    if (role === ROLE.USER && status !== STATUS.DONE && status !== STATUS.CANCEL) throw new HttpException(401, "User can't update status", false);
     if (role === ROLE.SHIPPER && status === STATUS.DONE) throw new HttpException(401, "Shipper can't update status done", false);
 
     let dataUpdate;
