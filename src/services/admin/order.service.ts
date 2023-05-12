@@ -12,8 +12,8 @@ class AdminOrderService {
   public user = new PrismaClient().user;
 
   public async findAllOrder(query: IQuery): Promise<ResponseOrder> {
-    const {take, skip } = queryPagination(query);
-    const {status } = query;
+    const { take, skip } = queryPagination(query);
+    const { status } = query;
     const condition = {
       take,
       skip,

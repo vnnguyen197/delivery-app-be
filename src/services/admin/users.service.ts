@@ -9,14 +9,28 @@ class AdminUserService {
 
   public async findAllUser(query: IQuery): Promise<ResponseListUser> {
     const { take, skip } = queryPagination(query);
-    const { role } = query;
+    const { role, search } = query;
 
-    const count = await this.users.count({ where: { role } });
+    const searchLike = search && [
+      {
+        fullName: {
+          contains: search,
+        },
+      },
+      {
+        phoneNumber: { contains: search },
+      },
+    ];
+    
+    const count = await this.users.count({ where: { role, OR: searchLike } });
 
     const rows: User[] = await this.users.findMany({
       take,
       skip,
-      where: { role },
+      where: {
+        role,
+        OR: searchLike,
+      },
       orderBy: [
         {
           updatedAt: 'desc',
