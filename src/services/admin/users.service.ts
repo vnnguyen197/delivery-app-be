@@ -11,25 +11,29 @@ class AdminUserService {
     const { take, skip } = queryPagination(query);
     const { role, search } = query;
 
-    const searchLike = search && [
-      {
-        fullName: {
-          contains: search,
+    let searchCondition;
+
+    if (search && search !== '') {
+      searchCondition = [
+        {
+          fullName: {
+            contains: search,
+          },
         },
-      },
-      {
-        phoneNumber: { contains: search },
-      },
-    ];
-    
-    const count = await this.users.count({ where: { role, OR: searchLike } });
+        {
+          phoneNumber: { contains: search },
+        },
+      ];
+    }
+
+    const count = await this.users.count({ where: { role, OR: searchCondition } });
 
     const rows: User[] = await this.users.findMany({
       take,
       skip,
       where: {
         role,
-        OR: searchLike,
+        OR: searchCondition,
       },
       orderBy: [
         {
