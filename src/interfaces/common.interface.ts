@@ -5,4 +5,5 @@ export interface IQuery {
   limit?: number;
   status?: STATUS;
   role?: ROLE;
+  search?: string
 }
