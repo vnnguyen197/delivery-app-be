@@ -5,6 +5,7 @@ import { ResponseOrder } from '@/interfaces/order.interface';
 import { ROLE } from '@/utils/constant';
 import { queryPagination } from '@/utils/util';
 import { Orders, PrismaClient, STATUS } from '@prisma/client';
+import { empty } from '@prisma/client/runtime';
 import { isEmpty } from 'class-validator';
 
 class OrderService {
@@ -82,6 +83,15 @@ class OrderService {
 
     const updateOrder = await this.orders.update({ where: { id: orderId }, data: dataUpdate });
     return updateOrder;
+  }
+
+  public async getOrderById(orderId: string):Promise<Orders> {
+   if (isEmpty(orderId)) throw new HttpException(400, 'OrderId is empty', false);
+
+   const findOder: Orders = await this.orders.findUnique({ where: { id: orderId } });
+   if (!findOder) throw new HttpException(409, "Order doesn't exist", false);
+
+   return findOder;
   }
   /**
    * checkCategory

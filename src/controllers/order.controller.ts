@@ -38,11 +38,22 @@ class OrderController {
     }
   };
 
+  public getDetail = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id: string = req.params.id
+      const detail: Orders = await this.orderService.getOrderById(id);
+
+      res.status(200).json({ data: detail, message: 'success' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateStatus = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const shipper = req.user.id;
-      const orderId = req.params.id
-      const data: {status: STATUS} = req.body;
+      const orderId = req.params.id;
+      const data: { status: STATUS } = req.body;
       const updateUserData: Orders = await this.orderService.updateStatus(orderId, data, shipper);
 
       res.status(200).json({ data: updateUserData, message: 'updated' });
