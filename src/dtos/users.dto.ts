@@ -73,5 +73,24 @@ class LoginUserDto {
   public password: string;
 }
 
-export { CreateUserDto, LoginUserDto, UpdateUserDto };
+class SendOTP {
+  @IsEmail()
+  public email: string;
+}
+
+class VerifyOTP {
+  @IsEmail()
+  public email: string;
+  @IsString()
+  public otp: string;
+}
+
+class ChagePassword {
+  @IsEmail()
+  public email: string;
+  @IsString()
+  public password: string;
+}
+
+export { CreateUserDto, LoginUserDto, UpdateUserDto, SendOTP, VerifyOTP, ChagePassword };
 
