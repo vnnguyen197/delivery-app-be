@@ -3,9 +3,7 @@ import { HttpException } from '@/exceptions/HttpException';
 import { IQuery } from '@/interfaces/common.interface';
 import { ResponseOrder } from '@/interfaces/order.interface';
 import { ROLE } from '@/utils/constant';
-import { queryPagination } from '@/utils/util';
 import { Orders, PrismaClient, STATUS } from '@prisma/client';
-import { empty } from '@prisma/client/runtime';
 import { isEmpty } from 'class-validator';
 
 class OrderService {
@@ -93,15 +91,6 @@ class OrderService {
 
    return findOder;
   }
-  /**
-   * checkCategory
-   */
-  // public async checkCategory(id?: string) {
-  //   if (!id) throw new HttpException(401, `Category is not null`, false);
-
-  //   const findCategory: Categories = await this.categoriesPrisma.findUnique({ where: { id } });
-  //   if (!findCategory) throw new HttpException(401, `This category not exists`, false);
-  // }
 }
 
 export default OrderService;

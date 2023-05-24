@@ -23,3 +23,20 @@ export const isEmpty = (value: string | number | object): boolean => {
 export const queryPagination = ({limit = 20, page=1}: QueryProduct) => {
   return { skip: limit * (page-1), take: +limit}
 }
+
+export const generateOTP = otp_length => {
+  // Declare a digits variable
+  // which stores all digits
+  const digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < otp_length; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+};
+
+export const checkExpiredTime = (time: number) => {
+    const currentOtp = new Date();
+  const outExpirationTime = new Date(time + 5 * 60 * 100);
+  return currentOtp >= outExpirationTime;
+};
