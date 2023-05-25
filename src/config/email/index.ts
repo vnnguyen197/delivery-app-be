@@ -17,7 +17,6 @@ const transporter = nodemailer.createTransport({
 
 
 export const mailOTP = async (email: string, otp: string) => {
-  console.log("🚀 ~ file: index.ts:20 ~ mailOTP ~ email:", email)
   const mailOptions = {
     from: EMAIL_FROM,
     to: email,
