@@ -20,6 +20,9 @@ npm install
 ```
 - Copy .env.example to .env.development.local and .env (create a file .env for run prisma)
 
+Create Email or Login ethereal mail (https://ethereal.email)
+- If create account ethereal -> Change account MAIL_FROM and MAIL_PASSWORD in file env with account created
+- If use Account in env.example -> Login ethereal email for get message OTP
 
 Follow these instructions to run project
 - Build and run docker on daemon
