@@ -1,4 +1,4 @@
-import { QueryProduct } from "@/interfaces/product.interface";
+import { QueryProduct } from '@/interfaces/product.interface';
 
 /**
  * @method isEmpty
@@ -20,9 +20,9 @@ export const isEmpty = (value: string | number | object): boolean => {
   }
 };
 
-export const queryPagination = ({limit = 20, page=1}: QueryProduct) => {
-  return { skip: limit * (page-1), take: +limit}
-}
+export const queryPagination = ({ limit = 20, page = 1 }: QueryProduct) => {
+  return { skip: limit * (page - 1), take: +limit };
+};
 
 export const generateOTP = otp_length => {
   // Declare a digits variable
@@ -36,7 +36,7 @@ export const generateOTP = otp_length => {
 };
 
 export const checkExpiredTime = (time: number) => {
-    const currentOtp = new Date();
+  const currentOtp = new Date(); 
   const outExpirationTime = new Date(time + 5 * 60 * 100);
-  return currentOtp >= outExpirationTime;
+  return currentOtp > outExpirationTime;
 };

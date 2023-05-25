@@ -75,7 +75,7 @@ class AuthService {
     let otpInfor: Otp = await this.otps.findUnique({ where: { email: email } });
     if (!otpInfor) throw new HttpException(409, `This email ${email} doesn't exists`, false);
 
-    if (!checkExpiredTime(otpInfor.updatedAt.getTime())) {
+    if (checkExpiredTime(otpInfor.updatedAt.getTime())) {
       throw new HttpException(409, `This OTP has expired`, false);
     }
 
@@ -93,7 +93,7 @@ class AuthService {
 
     if (!otpInfor.isVerified) throw new HttpException(401, `OTP is not verified!`, false);
 
-    if (!checkExpiredTime(otpInfor.updatedAt.getTime())) {
+    if (checkExpiredTime(otpInfor.updatedAt.getTime())) {
       await this.otps.update({ where: { email }, data: { isVerified: false } });
       throw new HttpException(401, `Password change session has expired`, false);
     }
