@@ -52,6 +52,17 @@ model Moderator {
   @@map("moderator")
 }
 
+model Tags {
+  id        String    @id @default(uuid())
+  name      String    @default("")
+  oders     Orders[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @default(now()) @map("deleted_at")
+
+  @@map("tag")
+}
+
 model Orders {
   id              String    @id @default(uuid())
   name            String    @default("")
@@ -67,6 +78,7 @@ model Orders {
   status          STATUS    @default(WAITING)
   userCreated     String    @map("user_created")
   shipper         String    @default("") @map("shipper")
+  tags            Tags[]
   user            User      @relation(fields: [userCreated], references: [id])
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
