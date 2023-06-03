@@ -33,15 +33,7 @@ class AdminOrderService {
     });
     return { rows, count, page: query.page ?? 1 };
   }
-  /**
-   * checkCategory
-   */
-  // public async checkCategory(id?: string) {
-  //   if (!id) throw new HttpException(401, `Category is not null`, false);
-
-  //   const findCategory: Categories = await this.categoriesPrisma.findUnique({ where: { id } });
-  //   if (!findCategory) throw new HttpException(401, `This category not exists`, false);
-  // }
+  
 }
 
 export default AdminOrderService;
