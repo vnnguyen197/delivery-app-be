@@ -1,8 +1,14 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 class CreatTagDto {
-  @IsString({message: "Name tag is not null"})
+  @IsString({ message: 'Name tag is not null' })
   public name: string;
 }
 
-export { CreatTagDto };
+class UpdateTagDto {
+  @IsString({ message: 'Name tag is not null' })
+  @IsOptional()
+  public name: string;
+}
+
+export { CreatTagDto, UpdateTagDto };

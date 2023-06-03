@@ -15,6 +15,8 @@ class AdminTagRoute implements Routes {
   private initializeRoutes() {
     this.router.post(`${this.path}`, authAdminMiddleware, this.tagController.create);
     this.router.get(`${this.path}`, authAdminMiddleware, this.tagController.getList);
+    this.router.patch(`${this.path}:id`, authAdminMiddleware, this.tagController.update);
+    this.router.delete(`${this.path}:id`, authAdminMiddleware, this.tagController.delete);
   }
 }
 
