@@ -53,38 +53,50 @@ model Moderator {
 }
 
 model Tags {
-  id        String    @id @default(uuid())
-  name      String    @default("")
+  id        String     @id @default(uuid())
+  name      String     @default("")
   oders     Orders[]
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @default(now()) @map("deleted_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  deletedAt DateTime?  @default(now()) @map("deleted_at")
+  TagOrder  TagOrder[]
 
   @@map("tag")
 }
 
 model Orders {
-  id              String    @id @default(uuid())
-  name            String    @default("")
-  productVolume   Float     @default(0) @map("product_volume")
-  volumeUnit      String    @default("g") @map("volume_unit")
-  description     String    @default("")
-  senderName      String    @default("") @map("sender_name")
-  senderPhone     String    @default("") @map("sender_phone")
-  senderAddress   String    @default("") @map("sender_address")
-  receiverName    String    @default("") @map("receiver_name")
-  receiverPhone   String    @default("") @map("receiver_phone")
-  receiverAddress String    @default("") @map("receiver_address")
-  status          STATUS    @default(WAITING)
-  userCreated     String    @map("user_created")
-  shipper         String    @default("") @map("shipper")
+  id              String     @id @default(uuid())
+  name            String     @default("")
+  productVolume   Float      @default(0) @map("product_volume")
+  volumeUnit      String     @default("g") @map("volume_unit")
+  description     String     @default("")
+  senderName      String     @default("") @map("sender_name")
+  senderPhone     String     @default("") @map("sender_phone")
+  senderAddress   String     @default("") @map("sender_address")
+  receiverName    String     @default("") @map("receiver_name")
+  receiverPhone   String     @default("") @map("receiver_phone")
+  receiverAddress String     @default("") @map("receiver_address")
+  status          STATUS     @default(WAITING)
+  userCreated     String     @map("user_created")
+  shipper         String     @default("") @map("shipper")
   tags            Tags[]
-  user            User      @relation(fields: [userCreated], references: [id])
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  deletedAt       DateTime? @default(now()) @map("deleted_at")
+  user            User       @relation(fields: [userCreated], references: [id])
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  deletedAt       DateTime?  @default(now()) @map("deleted_at")
+  TagOrder        TagOrder[]
 
   @@map("orders")
+}
+
+model TagOrder {
+  order   Orders @relation(fields: [orderId], references: [id])
+  orderId String @map("order_id")
+  tag     Tags?   @relation(fields: [tagId], references: [id])
+  tagId   String? @map("tag_id")
+
+  @@id([orderId])
+  @@unique([orderId, tagId])
 }
 
 model ProductPrices {
