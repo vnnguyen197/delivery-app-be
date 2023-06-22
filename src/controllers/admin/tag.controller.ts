@@ -39,7 +39,9 @@ class AdminTagController {
       const { id } = req.params;
       await this.tagService.deleteOne(id);
       res.status(200).json({ data: { message: 'Deleted tag successfully' }, message: 'success' });
-    } catch (error) {}
+    } catch (error) {
+      next(error)
+    }
   };
 }
 
