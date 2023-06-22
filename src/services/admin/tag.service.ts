@@ -31,25 +31,13 @@ class AdminTagService {
   }
 
   public async deleteOne(id: string): Promise<boolean> {
-    const findTag = await this.tag.findUnique({ where: { id } });
+    const findTag = await this.tag.findUnique({ where: { id }, include: { orders: true } });
     if (!findTag) throw new HttpException(409, 'The tag is not exists', false);
 
-    await this.order.updateMany({
-      where: {
-        tags: {
-          some: {
-            id,
-          },
-        },
-      },
-      data: {
-        tags: {
-          disconnect: {
-            id,
-          },
-        },
-      } as any,
-    });
+    await this.tag.update({
+       where: { id },
+       data: { orders: { set: [] } },
+     });
     
     await this.tag.delete({ where: { id } })
     

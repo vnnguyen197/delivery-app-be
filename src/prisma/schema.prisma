@@ -55,7 +55,7 @@ model Moderator {
 model Tags {
   id        String     @id @default(uuid())
   name      String     @default("")
-  oders     Orders[]
+  orders     Orders[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
   deletedAt DateTime?  @default(now()) @map("deleted_at")
@@ -90,13 +90,14 @@ model Orders {
 }
 
 model TagOrder {
-  order   Orders @relation(fields: [orderId], references: [id])
+  orders   Orders @relation(fields: [orderId], references: [id])
   orderId String @map("order_id")
-  tag     Tags?   @relation(fields: [tagId], references: [id])
+  tags     Tags?   @relation(fields: [tagId], references: [id])
   tagId   String? @map("tag_id")
 
   @@id([orderId])
   @@unique([orderId, tagId])
+  @@map("tag_order")
 }
 
 model ProductPrices {
