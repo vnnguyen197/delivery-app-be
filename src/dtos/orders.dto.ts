@@ -1,5 +1,5 @@
 import { STATUS } from '@prisma/client';
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 
 class CreateOrderDto {
@@ -30,7 +30,9 @@ class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
   public receiverAddress: string;
- 
+  @IsArray()
+  @IsNotEmpty()
+  public tags: string[];
 }
 
 class UpdateStatus {
