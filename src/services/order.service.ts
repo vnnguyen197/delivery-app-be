@@ -15,12 +15,22 @@ class OrderService {
 
     const { role } = await this.user.findUnique({ where: { id: idCreated } });
     if (role === ROLE.SHIPPER) throw new HttpException(401, "Shipper can't create order", false);
-
-    const inputData = { ...data, userCreated: idCreated };
+    
+    const {tags , ...dataIndex } = data
+    const inputData = {
+      ...dataIndex,
+      userCreated: idCreated,
+    };
 
     const createdOrder = await this.orders.create({
       data: {
         ...inputData,
+        tags: {
+          connect: tags.map(tagId => ({ id: tagId })),
+        },
+      },
+      include: {
+        tags: true,
       },
     });
     return createdOrder;
