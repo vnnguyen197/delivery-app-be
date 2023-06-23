@@ -104,7 +104,7 @@ class OrderService {
   public async getOrderById(orderId: string): Promise<Orders> {
     if (isEmpty(orderId)) throw new HttpException(400, 'OrderId is empty', false);
 
-    const findOder: Orders = await this.orders.findUnique({ where: { id: orderId } });
+    const findOder: Orders = await this.orders.findUnique({ where: { id: orderId }, include:{tags: true} });
     if (!findOder) throw new HttpException(409, "Order doesn't exist", false);
 
     return findOder;
