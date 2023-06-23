@@ -1,5 +1,3 @@
-import { CreatTagDto, UpdateTagDto } from '@/dtos/admin/tag.dto';
-import { HttpException } from '@/exceptions/HttpException';
 import { PrismaClient, Tags } from '@prisma/client';
 
 class TagService {
