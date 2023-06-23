@@ -64,6 +64,9 @@ class OrderService {
           updatedAt: 'desc',
         },
       ],
+      include: {
+        tags: true,
+      },
     });
     return { rows, count, page: query.page ?? 1 };
   }
