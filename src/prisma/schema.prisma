@@ -66,7 +66,7 @@ model Tags {
 
 model Province {
   id               Int        @id @default(autoincrement())
-  code             String     @default("")
+  code             String     @default("")@unique
   name             String     @default("")
   nameEn           String     @default("") @map("name_en")
   fullName         String     @default("") @map("full_name")
@@ -83,12 +83,13 @@ model Province {
 
 model District {
   id               Int      @id @default(autoincrement())
-  code             String   @default("")
+  code             String   @default("")@unique
   name             String   @default("")
   nameEn           String   @default("") @map("name_en")
   fullName         String   @default("") @map("full_name")
   fullNameEn       String   @default("") @map("full_name_en")
   codeName         String   @default("") @map("code_name")
+  unitId           Int        @map("unit_id")
   provinceId       Int
   province         Province @relation(fields: [provinceId], references: [id])
   ward             Ward[]
@@ -100,12 +101,13 @@ model District {
 
 model Ward {
   id               Int      @id @default(autoincrement())
-  code             String   @default("")
+  code             String   @default("")@unique
   name             String   @default("")
   nameEn           String   @default("") @map("name_en")
   fullName         String   @default("") @map("full_name")
   fullNameEn       String   @default("") @map("full_name_en")
   codeName         String   @default("") @map("code_name")
+  unitId           Int        @map("unit_id")
   districtId       Int      @map("district_id")
   district         District @relation(fields: [districtId], references: [id])
   ordersAsSender   Orders[] @relation(name: "SenderWardRelation")
@@ -148,6 +150,7 @@ model Orders {
   wardSenderId       Int        @map("ward_sender_id")
   wardReceiverId     Int        @map("ward_receiver_id")
 
+  @@index([id], map: "order_id_index")
   @@map("orders")
 }
 

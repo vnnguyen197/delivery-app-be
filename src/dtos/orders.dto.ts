@@ -20,7 +20,16 @@ class CreateOrderDto {
   public senderPhone: string;
   @IsString()
   @IsNotEmpty()
-  public senderAddress: string;
+  public senderStreet: string;
+  @IsNumber()
+  @IsNotEmpty()
+  public provinceSenderId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  public districtSenderId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  public wardSenderId: number;
   @IsString()
   @IsNotEmpty()
   public receiverName: string;
@@ -29,7 +38,16 @@ class CreateOrderDto {
   public receiverPhone: string;
   @IsString()
   @IsNotEmpty()
-  public receiverAddress: string;
+  public receiverStreet: string;
+  @IsNumber()
+  @IsNotEmpty()
+  public provinceReceiverId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  public districtReceiverId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  public wardReceiverId: number;
   @IsArray()
   @IsNotEmpty()
   public tags: string[];

@@ -18,8 +18,7 @@ const seedProvince = async () => {
       },
     });
   };
-  await prisma.province.deleteMany({});
-
+  
   await Promise.all([
     cover('01', 'Hà Nội', 'Ha Noi', 'Thành phố Hà Nội', 'Ha Noi City', 'ha_noi', 1),
     cover('26', 'Vĩnh Phúc', 'Vinh Phuc', 'Tỉnh Vĩnh Phúc', 'Vinh Phuc Province', 'vinh_phuc', 2),
