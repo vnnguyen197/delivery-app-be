@@ -18,6 +18,7 @@ class AdminOrderRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, authAdminMiddleware, this.orderController.getAll);
+    this.router.patch(`${this.path}/:id`, authAdminMiddleware, this.orderController.updateStatus);
   }
 }
 

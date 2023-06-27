@@ -10,6 +10,9 @@ class OrderService {
   public orders = new PrismaClient().orders;
   public user = new PrismaClient().user;
   public tag = new PrismaClient().tags;
+  public province = new PrismaClient().province;
+  public district = new PrismaClient().district;
+  public ward = new PrismaClient().ward;
 
   public async create(data: CreateOrderDto, idCreated: string): Promise<Orders> {
     if (isEmpty(data)) throw new HttpException(400, 'Data Order is empty', false);
@@ -21,6 +24,9 @@ class OrderService {
 
     const tagExisting = await this.tag.findMany({ where: { id: { in: tags } } });
     if (!tagExisting.length) throw new HttpException(400, 'Tags is not exist', false);
+
+    await this.checkAddressExist(data.provinceSenderId, data.districtSenderId, data.wardSenderId);
+    await this.checkAddressExist(data.provinceReceiverId, data.districtReceiverId, data.wardReceiverId);
 
     const inputData = {
       ...dataIndex,
@@ -66,6 +72,12 @@ class OrderService {
       ],
       include: {
         tags: true,
+        senderProvince: true,
+        senderDistrict: true,
+        senderWard: true,
+        receiverProvince: true,
+        receiverDistrict: true,
+        receiverWard: true,
       },
     });
     return { rows, count, page: query.page ?? 1 };
@@ -97,17 +109,42 @@ class OrderService {
       };
     }
 
-    const updateOrder = await this.orders.update({ where: { id: orderId }, data: dataUpdate });
+    const updateOrder = await this.orders.update({
+      where: { id: orderId },
+      data: dataUpdate,
+    });
     return updateOrder;
   }
 
   public async getOrderById(orderId: string): Promise<Orders> {
     if (isEmpty(orderId)) throw new HttpException(400, 'OrderId is empty', false);
 
-    const findOder: Orders = await this.orders.findUnique({ where: { id: orderId }, include:{tags: true} });
+    const findOder: Orders = await this.orders.findUnique({
+      where: { id: orderId },
+      include: {
+        tags: true,
+        senderProvince: true,
+        senderDistrict: true,
+        senderWard: true,
+        receiverProvince: true,
+        receiverDistrict: true,
+        receiverWard: true,
+      },
+    });
     if (!findOder) throw new HttpException(409, "Order doesn't exist", false);
 
     return findOder;
+  }
+
+  public async checkAddressExist(provinceId: number, districtId: number, wardId: number) {
+    const provice = await this.province.findUnique({ where: { id: provinceId } });
+    if (!provice) throw new HttpException(400, 'Province is not exists', false);
+
+    const district = await this.district.findUnique({ where: { id: districtId } });
+    if (!district) throw new HttpException(400, 'District is not exists', false);
+
+    const ward = await this.ward.findUnique({ where: { id: wardId } });
+    if (!ward) throw new HttpException(400, 'Ward is not exists', false);
   }
 }
 

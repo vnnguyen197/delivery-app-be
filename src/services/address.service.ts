@@ -23,7 +23,7 @@ class AddressService {
   }
 
   public async getWard(districtId: number): Promise<Ward[]> {
-    if (isEmpty(districtId)) throw new HttpException(200, 'districtId is empty', false);
+    if (isEmpty(districtId)) throw new HttpException(400, 'districtId is empty', false);
 
     const district = await this.district.findUnique({ where: { id: districtId } });
     if (!district) throw new HttpException(400, 'District is not exists', false);
