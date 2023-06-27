@@ -219,7 +219,13 @@ model Otp {
 
 enum STATUS {
   WAITING
+  NEW
   SHIPPING
   DONE
+  CANCEL
+}
+
+enum UPDATE_STATUS_ORDER_ADMIN {
+  NEW
   CANCEL
 }

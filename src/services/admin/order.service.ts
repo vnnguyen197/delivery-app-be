@@ -33,7 +33,19 @@ class AdminOrderService {
     });
     return { rows, count, page: query.page ?? 1 };
   }
-  
+
+  public async updateStatus(id: string, status: STATUS): Promise<Orders> {
+    if (isEmpty(status)) throw new HttpException(400, 'Status is empty', false);
+   
+    const findOrder: Orders = await this.orders.findUnique({ where: { id } });
+    if (!findOrder) throw new HttpException(409, "Order doesn't exist", false);
+
+    const updateOrder = await this.orders.update({
+      where: { id },
+      data: { status },
+    });
+    return updateOrder;
+  }
 }
 
 export default AdminOrderService;

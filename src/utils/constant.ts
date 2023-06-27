@@ -11,8 +11,15 @@ enum ROLE {
 
 enum STATUS {
   WAITING = 'WAITING',
+  NEW = 'NEW',
   SHIPPING = 'SHIPPING',
   DONE = 'DONE',
   CANCEL = 'CANCEL',
 }
-export { GENDER, ROLE, STATUS };
+
+enum STATUS_ORDER_ADMIN {
+  NEW = 'NEW',
+  CANCEL = 'CANCEL',
+}
+
+export { GENDER, ROLE, STATUS, STATUS_ORDER_ADMIN };

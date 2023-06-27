@@ -1,5 +1,6 @@
 import { ResponseOrder } from '@/interfaces/order.interface';
 import AdminOrderService from '@/services/admin/order.service';
+import { Orders, STATUS } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 class AdminOrderController {
@@ -11,6 +12,18 @@ class AdminOrderController {
       const data: ResponseOrder = await this.orderService.findAllOrder(query);
 
       res.status(200).json({ data, message: 'success' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const orderId = req.params.id;
+      const  { status } = req.query;
+      const updateOrder: Orders = await this.orderService.updateStatus(orderId, status as STATUS);
+
+      res.status(200).json({ data: updateOrder, message: 'updated' });
     } catch (error) {
       next(error);
     }
