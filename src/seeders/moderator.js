@@ -18,7 +18,6 @@ const seedMod = async () => {
     await prisma.moderator.create({ data: mod });
   }
 
-  console.log('Seed data successfully.');
   await prisma.$disconnect();
 };
 

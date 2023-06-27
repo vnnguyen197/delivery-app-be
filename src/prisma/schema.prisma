@@ -55,7 +55,7 @@ model Moderator {
 model Tags {
   id        String     @id @default(uuid())
   name      String     @default("")
-  orders     Orders[]
+  orders    Orders[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
   deletedAt DateTime?  @default(now()) @map("deleted_at")
@@ -64,35 +64,100 @@ model Tags {
   @@map("tag")
 }
 
-model Orders {
-  id              String     @id @default(uuid())
-  name            String     @default("")
-  productVolume   Float      @default(0) @map("product_volume")
-  volumeUnit      String     @default("g") @map("volume_unit")
-  description     String     @default("")
-  senderName      String     @default("") @map("sender_name")
-  senderPhone     String     @default("") @map("sender_phone")
-  senderAddress   String     @default("") @map("sender_address")
-  receiverName    String     @default("") @map("receiver_name")
-  receiverPhone   String     @default("") @map("receiver_phone")
-  receiverAddress String     @default("") @map("receiver_address")
-  status          STATUS     @default(WAITING)
-  userCreated     String     @map("user_created")
-  shipper         String     @default("") @map("shipper")
-  tags            Tags[]
-  user            User       @relation(fields: [userCreated], references: [id])
-  createdAt       DateTime   @default(now()) @map("created_at")
-  updatedAt       DateTime   @updatedAt @map("updated_at")
-  deletedAt       DateTime?  @default(now()) @map("deleted_at")
-  TagOrder        TagOrder[]
+model Province {
+  id               Int        @id @default(autoincrement())
+  code             String     @default("")@unique
+  name             String     @default("")
+  nameEn           String     @default("") @map("name_en")
+  fullName         String     @default("") @map("full_name")
+  fullNameEn       String     @default("") @map("full_name_en")
+  codeName         String     @default("") @map("code_name")
+  unitId           Int        @map("unit_id")
+  countryId        Int        @map("country_id")
+  District         District[]
+  ordersAsSender   Orders[]   @relation(name: "SenderProvinceRelation")
+  ordersAsReceiver Orders[]   @relation(name: "ReceiverProvinceRelation")
 
+  @@map("province")
+}
+
+model District {
+  id               Int      @id @default(autoincrement())
+  code             String   @default("")@unique
+  name             String   @default("")
+  nameEn           String   @default("") @map("name_en")
+  fullName         String   @default("") @map("full_name")
+  fullNameEn       String   @default("") @map("full_name_en")
+  codeName         String   @default("") @map("code_name")
+  unitId           Int        @map("unit_id")
+  provinceId       Int
+  province         Province @relation(fields: [provinceId], references: [id])
+  ward             Ward[]
+  ordersAsSender   Orders[] @relation(name: "SenderDistrictRelation")
+  ordersAsReceiver Orders[] @relation(name: "ReceiverDistrictRelation")
+
+  @@map("district")
+}
+
+model Ward {
+  id               Int      @id @default(autoincrement())
+  code             String   @default("")@unique
+  name             String   @default("")
+  nameEn           String   @default("") @map("name_en")
+  fullName         String   @default("") @map("full_name")
+  fullNameEn       String   @default("") @map("full_name_en")
+  codeName         String   @default("") @map("code_name")
+  unitId           Int        @map("unit_id")
+  districtId       Int      @map("district_id")
+  district         District @relation(fields: [districtId], references: [id])
+  ordersAsSender   Orders[] @relation(name: "SenderWardRelation")
+  ordersAsReceiver Orders[] @relation(name: "ReceiverWardRelation")
+
+  @@map("ward")
+}
+
+model Orders {
+  id                 String     @id @default(uuid())
+  name               String     @default("")
+  productVolume      Float      @default(0) @map("product_volume")
+  volumeUnit         String     @default("g") @map("volume_unit")
+  description        String     @default("")
+  senderName         String     @default("") @map("sender_name")
+  senderPhone        String     @default("") @map("sender_phone")
+  senderStreet       String     @default("") @map("sender_street")
+  senderProvince     Province   @relation(name: "SenderProvinceRelation", fields: [provinceSenderId], references: [id])
+  senderDistrict     District   @relation(name: "SenderDistrictRelation", fields: [districtSenderId], references: [id])
+  senderWard         Ward       @relation(name: "SenderWardRelation", fields: [wardSenderId], references: [id])
+  receiverName       String     @default("") @map("receiver_name")
+  receiverPhone      String     @default("") @map("receiver_phone")
+  receiverStreet     String     @default("") @map("receiver_street")
+  receiverProvince   Province   @relation(name: "ReceiverProvinceRelation", fields: [provinceReceiverId], references: [id])
+  receiverDistrict   District   @relation(name: "ReceiverDistrictRelation", fields: [districtReceiverId], references: [id])
+  receiverWard       Ward       @relation(name: "ReceiverWardRelation", fields: [wardReceiverId], references: [id])
+  status             STATUS     @default(WAITING)
+  userCreated        String     @map("user_created")
+  shipper            String     @default("") @map("shipper")
+  tags               Tags[]
+  user               User       @relation(fields: [userCreated], references: [id])
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+  deletedAt          DateTime?  @default(now()) @map("deleted_at")
+  TagOrder           TagOrder[]
+  provinceSenderId   Int        @map("province_sender_id")
+  provinceReceiverId Int        @map("province_receiver_id")
+  districtSenderId   Int        @map("district_sender_id")
+  districtReceiverId Int        @map("district_receiver_id")
+  wardSenderId       Int        @map("ward_sender_id")
+  wardReceiverId     Int        @map("ward_receiver_id")
+
+  @@index([id], map: "order_id_index")
   @@map("orders")
 }
 
 model TagOrder {
-  orders   Orders @relation(fields: [orderId], references: [id])
-  orderId String @map("order_id")
-  tags     Tags?   @relation(fields: [tagId], references: [id])
+  orders  Orders  @relation(fields: [orderId], references: [id])
+  orderId String  @map("order_id")
+  tags    Tags?   @relation(fields: [tagId], references: [id])
   tagId   String? @map("tag_id")
 
   @@id([orderId])

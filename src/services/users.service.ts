@@ -38,7 +38,6 @@ class UserService {
     const findUser: User = await this.users.findUnique({ where: { id: userId } });
     if (!findUser) throw new HttpException(409, "User doesn't exist", false);
 
-    // const hashedPassword = await hash(userData.password, 10);
     const updateUserData = await this.users.update({ where: { id: userId }, data: { ...userData } });
     return updateUserData;
   }

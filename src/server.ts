@@ -10,6 +10,7 @@ import AdminUsersRoute from '@routes/admin/users.route';
 import OrderRoute from '@routes/order.route';
 import ProductsRoute from '@routes/product.route';
 import TagRoute from '@routes/tag.route';
+import AddressRoute from '@routes/address.route';
 
 validateEnv();
 
@@ -24,7 +25,7 @@ const app = new App([
   new AdminUsersRoute(),
   new AdminOrderRoute(),
   new AdminTagRoute(),
-
+  new AddressRoute(),
 ]);
 
 app.listen();
