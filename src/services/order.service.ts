@@ -53,14 +53,14 @@ class OrderService {
     if (role && role === ROLE.USER) {
       condition = { ...query, userCreated };
     } else {
-      if (query.status !== STATUS.WAITING) {
+      if (query.status !== STATUS.NEW) {
         condition = { ...query, shipper: userCreated };
       } else {
         condition = { ...query };
       }
     }
 
-    const count = await this.orders.count();
+    const count = await this.orders.count({ where: {...condition} });
     const rows: Orders[] = await this.orders.findMany({
       where: {
         ...condition,
