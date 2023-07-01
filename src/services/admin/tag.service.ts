@@ -18,7 +18,10 @@ class AdminTagService {
    * async getAll
    */
   public async getAll(): Promise<Tags[]> {
-    const listData = await this.tag.findMany();
+    const listData = await this.tag.findMany({
+      orderBy: {
+      createdAt: 'desc'
+    }});
     return listData;
   }
 
